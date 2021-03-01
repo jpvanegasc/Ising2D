@@ -5,7 +5,7 @@ CACH = --tool=cachegrind
 C_STD = -std=c++14
 
 # Dependecies
-DEPS = random64.cpp
+DEPS = random64.cpp ising2D.cpp
 
 all : main.o 
 
