@@ -9,7 +9,7 @@ DEPS = random64.cpp ising2D.cpp
 
 all : main.o 
 
-main.o : main.cpp $(DEPS) deps/*.h
+main.o : main.cpp $(DEPS) *.h
 	g++ $(C_STD) -O2 $< $(DEPS) -o $@
 	time ./$@
 

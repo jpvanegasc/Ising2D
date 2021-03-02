@@ -1,43 +1,57 @@
 /**
  * Monte Carlo Ising 2D Metropolis
  */
+#ifndef __ISING2D_H
+#define __ISING2D_H
+
 #include<iostream>
 #include<cmath>
 
 #include"random64.h"
 #include"constants.h"
 
-class SpinSystem{
+class Ising2D{
     private:
-        int s[L][L]; int E, M;
+        CRandom *ran = NULL;
+
+        int *system = NULL;
+
+        int E, M;
     public:
+        double beta = 0.0;
+
+        Ising2D(unsigned long long seed);
+        ~Ising2D();
+
         void initialize_down(void);
-        void metropolis_step(double beta, CRandom &ran);
-        double get_E(void);
-        double get_M(void);
+        void metropolis_step(void);
+
+        double get_E(void){return (double)E;}
+        double get_M(void){return (double)std::abs(M);}
 };
 
-inline double SpinSystem::get_E(void){return (double)E;}
-inline double SpinSystem::get_M(void){return (double)std::abs(M);}
+// 2D to 1D
+#define SIZE (Lx*Ly)
+#define X_MULT Ly
 
-void SpinSystem::initialize_down(void){
-    for(int i=0; i<L; i++)
-        for(int j=0; j<L; j++)
-            s[i][j] = -1;
-    M = -L2; E = -2*L2;
-}
+/**
+ * Transform from 2D notation to 1D notation 
+ * @return 1D macro-coordinate on array
+ */
+#define get_1D(ix, iy) (( (ix)*X_MULT) + (iy))
 
-void SpinSystem::metropolis_step(double beta, CRandom &ran){
-    int n = (int)L2*ran.r(); int i = n%L, j = n/L; // Just one random number to save computing time
-    int dE = 2*s[i][j]*(s[(i+1)%L][j] + s[(L+i-1)%L][j] + s[i][(j+1)%L] + s[i][(L+j-1)%L]);
 
-    if(dE <= 0){
-        s[i][j] *= -1; E += dE; M += 2*s[i][j];
-        return;
-    }
-    else if(ran.r() < std::exp(-beta*dE)){
-        s[i][j] *= -1; E += dE; M += 2*s[i][j];
-        return;
-    }
-}
+// 1D to 2D
+/**
+ * Transform from 1D notation to 2D notation
+ * @return x coordinate
+ */
+#define get_ix(index) ((index)/X_MULT)
+/**
+ * Transform from 1D notation to 2D notation
+ * @return y coordinate
+ */
+#define get_iy(index) ((index)%Ly)
 
+
+#endif // __ISING2D_H

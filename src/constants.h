@@ -1,3 +1,4 @@
-const double kB = 1.0;
-const int L = 8;
-const int L2 = L*L;
+#define kB 1.0
+
+#define Lx 8
+#define Ly 8
