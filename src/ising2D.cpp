@@ -39,3 +39,16 @@ void Ising2D::metropolis_step(void){
     }
 }
 
+void Ising2D::save(std::string filename, bool gnuplot){
+    std::ofstream file(filename);
+
+    for(int ix=0; ix<Lx; ix++){
+        for(int iy=0; iy<Ly; iy++){
+            if(gnuplot) file << ix << ',' << iy << ',' << system[get_1D(ix, iy)] << '\n';
+        }
+        if(gnuplot) file << '\n';
+    }
+
+    file.close();
+}
+

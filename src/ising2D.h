@@ -5,6 +5,7 @@
 #define __ISING2D_H
 
 #include<iostream>
+#include<fstream>
 #include<cmath>
 
 #include"random64.h"
@@ -25,6 +26,8 @@ class Ising2D{
 
         void initialize_down(void);
         void metropolis_step(void);
+
+        void save(std::string filename, bool gnuplot);
 
         double get_E(void){return (double)E;}
         double get_M(void){return (double)std::abs(M);}
